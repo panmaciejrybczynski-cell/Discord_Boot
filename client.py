@@ -1,7 +1,10 @@
 import discord
+import os
+import random
 from password import gen_pass
 from discord.ext import commands
 import mytoken
+import datetime
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -45,5 +48,33 @@ async def calc(ctx, a = 1, op="+", b = 1):
 @bot.command()
 async def boo(ctx):
     await ctx.send("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!")
+
+
+@bot.command()
+async def mem(ctx):
+    ings = os.listdir('images')
+    img = random.choice(ings)
+    with open(f'images/{img}', 'rb') as f:
+                picture = discord.File(f)
+    await ctx.send(file=picture)
+
+
+def mem_godzina():
+      teraz = datetime.datetime.now()
+      if teraz.hour < 12:
+        return 'images/rano'
+      elif teraz.hour > 20:
+        return 'images/wieczor'
+      else:
+        return 'images/poludnie'
+
+@bot.command()
+async def memV2(ctx): 
+    sciezka = mem_godzina()
+    ings = os.listdir(sciezka)
+    img = random.choice(ings)
+    with open(f'{sciezka}/{img}', 'rb') as f:
+                picture = discord.File(f)
+    await ctx.send(file=picture)
 
 bot.run(mytoken.TOKEN)
